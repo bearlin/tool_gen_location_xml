@@ -4,13 +4,20 @@ from sys import argv
 import codecs
 
 print "Start."
-script, filename = argv
-print "script: %r." % script
-print "filename: %r." % filename
+
+if len(argv) < 4:
+  print "Usage : " + argv[0] + " inputfile country city"
+  exit(0)
+
+currentScript, inputFilename, inputCountry, inputCity = argv
+print "currentScript: %r" % currentScript
+print "inputFilename: %r" % inputFilename
+print "inputCountry: %r" % inputCountry
+print "inputCity: %r" % inputCity
 
 print "Opening the rawfile..."
-rawfile = codecs.open(filename, 'r', encoding='utf-8')
-xmlfile = codecs.open(filename + ".xml", 'w', encoding='utf-8')
+rawfile = codecs.open(inputFilename, 'r', encoding='utf-8')
+xmlfile = codecs.open(inputFilename + ".xml", 'w', encoding='utf-8')
 
 currentDataState = 0; # 0:Initialize state; 1: We are now handling departure data; 2: We are now handling destination data;
 departureLatList = []
@@ -86,8 +93,8 @@ for index in range(len(departureLatList)):
   # Prepare datas
   locationNameDeparture = "data_dep_" + str(index)
   locationNameDestination = "data_des_" + str(index)
-  country = "China"
-  city = "Shanghai"
+  country = inputCountry
+  city = inputCity
   postalCode=""
   street=""
   houseNumber=""
