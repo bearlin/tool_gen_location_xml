@@ -12,7 +12,7 @@ print "Opening the rawfile..."
 rawfile = codecs.open(filename, 'r', encoding='utf-8')
 xmlfile = codecs.open(filename + ".xml", 'w', encoding='utf-8')
 
-isDepartureData=2; # 0: We are now NOT handling departure data, 1: We are now handling departure data, 2:Initialize state
+currentDataState = 0; # 0:Initialize state; 1: We are now handling departure data; 2: We are now handling destination data;
 departureLatList = []
 departureLonList = []
 destinationLatList = []
@@ -22,54 +22,57 @@ destinationLonList = []
 lineCount=0
 for string in rawfile:
   lineCount = lineCount + 1
-  print "Processing[%d]:%s" % (lineCount, string)
+  #print "Processing[%d]:%s" % (lineCount, string)
 
-  # skip the header (first line)
+  # Skip the header (first line)
   if (lineCount == 1) :
     continue
 
   strtmp1 = string
-  # print "len(strtmp1):%r" % (len(strtmp1))
+
+  # Find '('
   keyIdxNext = strtmp1.find('(', 0)
   while (keyIdxNext != -1):
     # Initialize departure/destination state
-    if (isDepartureData == 2) :
-      isDepartureData = 1
+    if (currentDataState == 0) :
+      currentDataState = 1
 
     startIdx = keyIdxNext + 1
+    # Find ','
     keyIdxEnd = strtmp1.find(',', startIdx)
     endIdx = keyIdxEnd
-    # print "keyIdxNext01:%r" % (keyIdxNext)
-    # print "keyIdxEnd:%r" % (keyIdxEnd)
-    # print "startIdx:%r" % (startIdx)
-    # print "endIdx:%r" % (endIdx)
     strtmp2 = strtmp1[startIdx:endIdx]
-    print "Found latitute:%s" % (strtmp2)
-    if (isDepartureData == 1) :
+    #print "Found latitute:%s" % (strtmp2)
+
+    # Save latitute
+    if (currentDataState == 1) :
       departureLatList.append(strtmp2);
-    elif (isDepartureData == 0) :
+    elif (currentDataState == 2) :
       destinationLatList.append(strtmp2);
 
+    # Find ','
     keyIdxNext = strtmp1.find(',', endIdx)
     startIdx = keyIdxNext + 2
+    # Find ')'
     keyIdxEnd = strtmp1.find(')', startIdx)
     endIdx = keyIdxEnd
     strtmp2 = strtmp1[startIdx:endIdx]
-    print "Found longitute:%s" % (strtmp2)
-    if (isDepartureData == 1) :
+    #print "Found longitute:%s" % (strtmp2)
+
+    # Save longitute
+    if (currentDataState == 1) :
       departureLonList.append(strtmp2);
-    elif (isDepartureData == 0) :
+    elif (currentDataState == 2) :
       destinationLonList.append(strtmp2);
 
     # Try to find next keyIdxNext
     keyIdxNext = strtmp1.find('(', endIdx)
-    # print "keyIdxNext02:%r" % (keyIdxNext)
 
     # Toggle departure/destination state
-    if (isDepartureData == 0) :
-      isDepartureData = 1
-    elif (isDepartureData == 1) :
-      isDepartureData = 0
+    if (currentDataState == 1) :
+      currentDataState = 2
+    elif (currentDataState == 2) :
+      currentDataState = 1
 
 # After all lines in rawfile was parsed
 for index in range(len(departureLatList)):
@@ -77,12 +80,30 @@ for index in range(len(departureLatList)):
   depLon = departureLonList[index]
   desLat = destinationLatList[index]
   desLon = destinationLonList[index]
-  print "%s,%s\t%s,%s" % (depLat, depLon, desLat, desLon)
-  # dumpfile.write(wstr)
-  # dumpfile.write("\n")
+  #print "%s,%s\t%s,%s" % (depLat, depLon, desLat, desLon)
 
-  # if (lineCount == 3) :
-  #   break
+  # Write xml results to xmlfile
+  # Prepare datas
+  locationNameDeparture = "data_dep_" + str(index)
+  locationNameDestination = "data_des_" + str(index)
+  country = "China"
+  city = "Shanghai"
+  postalCode=""
+  street=""
+  houseNumber=""
+  crossing=""
+  # Write departure
+  print "Writing : %s(%s,%s), %s(%s,%s)" % (locationNameDeparture, depLat, depLon, locationNameDestination, desLat, desLon)
+  xmlfile.write("  <!-- For jv test -->\n")
+  xmlfile.write("  <Location name=\"" + locationNameDeparture + "\">\n")
+  xmlfile.write("    <address country=\"" + country + "\" city=\"" + city + "\" postalCode=\"" + postalCode + "\" street=\"" + street + "\" houseNumber=\"" + houseNumber + "\" crossing=\"" + crossing + "\" />\n")
+  xmlfile.write("    <position latitude=\"" + depLat + "\" longitude=\"" + depLon + "\" />\n")
+  xmlfile.write("  </Location>\n")
+  # Write destination
+  xmlfile.write("  <Location name=\"" + locationNameDestination + "\">\n")
+  xmlfile.write("    <address country=\"" + country + "\" city=\"" + city + "\" postalCode=\"" + postalCode + "\" street=\"" + street + "\" houseNumber=\"" + houseNumber + "\" crossing=\"" + crossing + "\" />\n")
+  xmlfile.write("    <position latitude=\"" + desLat + "\" longitude=\"" + desLon + "\" />\n")
+  xmlfile.write("  </Location>\n")
 
 xmlfile.close()
 rawfile.close()
