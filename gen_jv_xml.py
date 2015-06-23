@@ -5,13 +5,15 @@ import codecs
 
 print "Start."
 
-if len(argv) < 4:
-  print "Usage : " + argv[0] + " inputfile country city"
+if len(argv) < 5:
+  print "Usage : " + argv[0] + " CoordinatesFilename LocationNamePrefix countryName CityName"
+  print "Example : ./gen_jv_xml.py raw.txt FakePrefix Taiwan Taipei"
   exit(0)
 
-currentScript, inputFilename, inputCountry, inputCity = argv
+currentScript, inputFilename, inputLocationNamePrefix, inputCountry, inputCity = argv
 print "currentScript: %r" % currentScript
 print "inputFilename: %r" % inputFilename
+print "inputLocationNamePrefix: %r" % inputLocationNamePrefix
 print "inputCountry: %r" % inputCountry
 print "inputCity: %r" % inputCity
 
@@ -91,8 +93,8 @@ for index in range(len(departureLatList)):
 
   # Write xml results to xmlfile
   # Prepare datas
-  locationNameDeparture = "data_dep_" + str(index)
-  locationNameDestination = "data_des_" + str(index)
+  locationNameDeparture = inputLocationNamePrefix + "_Departure_" + str(index)
+  locationNameDestination = inputLocationNamePrefix + "_Destination_" + str(index)
   country = inputCountry
   city = inputCity
   postalCode=""
