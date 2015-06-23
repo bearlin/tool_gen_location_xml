@@ -103,7 +103,7 @@ for index in range(len(departureLatList)):
   crossing=""
   # Write departure
   print "Writing : %s(%s,%s), %s(%s,%s)" % (locationNameDeparture, depLat, depLon, locationNameDestination, desLat, desLon)
-  xmlfile.write("  <!-- For jv test -->\n")
+  xmlfile.write("  <!-- For " + country + "." + city + " JunctionView Test -->\n")
   xmlfile.write("  <Location name=\"" + locationNameDeparture + "\">\n")
   xmlfile.write("    <address country=\"" + country + "\" city=\"" + city + "\" postalCode=\"" + postalCode + "\" street=\"" + street + "\" houseNumber=\"" + houseNumber + "\" crossing=\"" + crossing + "\" />\n")
   xmlfile.write("    <position latitude=\"" + depLat + "\" longitude=\"" + depLon + "\" />\n")
