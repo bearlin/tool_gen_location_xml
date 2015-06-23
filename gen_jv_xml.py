@@ -85,10 +85,10 @@ for string in rawfile:
 
 # After all lines in rawfile was parsed
 for index in range(len(departureLatList)):
-  depLat = departureLatList[index]
-  depLon = departureLonList[index]
-  desLat = destinationLatList[index]
-  desLon = destinationLonList[index]
+  depLat = departureLatList[index] + "0"
+  depLon = departureLonList[index] + "0"
+  desLat = destinationLatList[index] + "0"
+  desLon = destinationLonList[index] + "0"
   #print "%s,%s\t%s,%s" % (depLat, depLon, desLat, desLon)
 
   # Write xml results to xmlfile
