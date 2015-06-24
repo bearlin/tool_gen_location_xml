@@ -19,7 +19,7 @@ print "inputCity: %r" % inputCity
 
 print "Opening the rawfile..."
 rawfile = codecs.open(inputFilename, 'r', encoding='utf-8')
-xmlfile = codecs.open(inputFilename + ".xml", 'w', encoding='utf-8')
+xmlfile = codecs.open(inputFilename + ".xml.txt", 'w', encoding='utf-8')
 
 currentDataState = 0; # 0:Initialize state; 1: We are now handling departure data; 2: We are now handling destination data;
 departureLatList = []
