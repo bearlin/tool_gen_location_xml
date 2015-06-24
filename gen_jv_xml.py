@@ -33,6 +33,10 @@ for string in rawfile:
   lineCount = lineCount + 1
   #print "Processing[%d]:%s" % (lineCount, string)
 
+  # ignoredCoordinate = 0
+  # if (string[0] == '#') :
+  #   print "!!!Ignore this line!!![%d]:%s" % (lineCount, string)
+
   # Skip the header (first line)
   if (lineCount == 1) :
     continue
@@ -93,8 +97,8 @@ for index in range(len(departureLatList)):
 
   # Write xml results to xmlfile
   # Prepare datas
-  locationNameDeparture = inputLocationNamePrefix + "_Departure_" + str(index)
-  locationNameDestination = inputLocationNamePrefix + "_Destination_" + str(index)
+  locationNameDeparture = inputLocationNamePrefix + "_Departure_" + str(index+1)
+  locationNameDestination = inputLocationNamePrefix + "_Destination_" + str(index+1)
   country = inputCountry
   city = inputCity
   postalCode=""
@@ -102,7 +106,7 @@ for index in range(len(departureLatList)):
   houseNumber=""
   crossing=""
   # Write departure
-  print "Writing : %s(%s,%s), %s(%s,%s)" % (locationNameDeparture, depLat, depLon, locationNameDestination, desLat, desLon)
+  print "Writing :[%d]%s(%s,%s), %s(%s,%s)" % (index+1, locationNameDeparture, depLat, depLon, locationNameDestination, desLat, desLon)
   xmlfile.write("  <!-- For " + country + "." + city + " JunctionView Test -->\n")
   xmlfile.write("  <Location name=\"" + locationNameDeparture + "\">\n")
   xmlfile.write("    <address country=\"" + country + "\" city=\"" + city + "\" postalCode=\"" + postalCode + "\" street=\"" + street + "\" houseNumber=\"" + houseNumber + "\" crossing=\"" + crossing + "\" />\n")
