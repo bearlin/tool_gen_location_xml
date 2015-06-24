@@ -29,13 +29,16 @@ destinationLonList = []
 
 # Processing all lines in rawfile
 lineCount=0
+ignoredLineCount=0
+writedLineCount=0
 for string in rawfile:
   lineCount = lineCount + 1
   #print "Processing[%d]:%s" % (lineCount, string)
 
-  # ignoredCoordinate = 0
-  # if (string[0] == '#') :
-  #   print "!!!Ignore this line!!![%d]:%s" % (lineCount, string)
+  if (string[0] == '#') :
+    print "!!!Ignore this line!!![%d]:%s" % (lineCount, string)
+    ignoredLineCount+=1
+    continue
 
   # Skip the header (first line)
   if (lineCount == 1) :
@@ -117,8 +120,10 @@ for index in range(len(departureLatList)):
   xmlfile.write("    <address country=\"" + country + "\" city=\"" + city + "\" postalCode=\"" + postalCode + "\" street=\"" + street + "\" houseNumber=\"" + houseNumber + "\" crossing=\"" + crossing + "\" />\n")
   xmlfile.write("    <position latitude=\"" + desLat + "\" longitude=\"" + desLon + "\" />\n")
   xmlfile.write("  </Location>\n")
+  writedLineCount+=1
 
 xmlfile.close()
 rawfile.close()
 
+print "writedLineCount:[%d], ignoredLineCount:[%d]" % (writedLineCount, ignoredLineCount)
 print "Done."
