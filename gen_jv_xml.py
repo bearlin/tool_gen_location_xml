@@ -6,8 +6,9 @@ import codecs
 print "Start."
 
 if len(argv) < 5:
-  print "Usage : " + argv[0] + " CoordinatesFilename LocationNamePrefix countryName CityName"
+  print "Usage :   " + argv[0] + " CoordinatesFilename LocationNamePrefix countryName CityName"
   print "Example : ./gen_jv_xml.py raw.txt FakePrefix Taiwan Taipei"
+  print "NOTE :    In the input file raw.txt, lines prefix with '#' will be ignored"
   exit(0)
 
 currentScript, inputFilename, inputLocationNamePrefix, inputCountry, inputCity = argv
