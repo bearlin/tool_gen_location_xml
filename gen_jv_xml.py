@@ -36,7 +36,7 @@ for string in rawfile:
   #print "Processing[%d]:%s" % (lineCount, string)
 
   if (string[0] == '#') :
-    print "!!!Ignore this line!!![%d]:%s" % (lineCount, string)
+    print "Ignored line[%d] : %s" % (lineCount, string)
     ignoredLineCount+=1
     continue
 
